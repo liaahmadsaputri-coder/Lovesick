@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Buat kamu 💌</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--blush:#fde8ee;--rose:#e8a0b4;--mauve:#b96a85;--cream:#fffaf5;--gold:#d9b779;--ink:#7a3e55}
+@media (prefers-color-scheme:dark){:root{--blush:#fde8ee;--ink:#7a3e55}}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%}
+body{display:flex;align-items:center;justify-content:center;min-height:100vh;
+background:radial-gradient(circle at 20% 10%,#fff3f6,var(--blush) 60%,#f8d5df);
+font-family:'Caveat','Segoe Script',cursive;color:var(--ink);overflow-x:hidden;padding:20px;
+padding-top:calc(20px + env(safe-area-inset-top,0px));padding-bottom:calc(20px + env(safe-area-inset-bottom,0px))}
+.deco{position:fixed;pointer-events:none;color:var(--gold);animation:tw 3.5s ease-in-out infinite;opacity:0}
+.deco.pink{color:var(--rose)}
+@keyframes tw{0%,100%{opacity:0;transform:scale(.6)}50%{opacity:.85;transform:scale(1) translateY(-8px)}}
+.scene{display:none;width:100%;max-width:440px;text-align:center;position:relative;z-index:1}
+.scene.active{display:block;animation:fade 1s ease}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.hint{font-size:1.3rem;margin-top:28px;opacity:.9}
+.tap{font-size:1.1rem;margin-top:6px;opacity:.6}
+.envelope{position:relative;width:300px;max-width:100%;height:200px;margin:0 auto;cursor:pointer;background:var(--rose);border-radius:10px;
+box-shadow:0 14px 34px rgba(185,106,133,.32);animation:wiggle 2.8s ease-in-out infinite}
+.envelope::before{content:"";position:absolute;inset:0;border-radius:10px;
+background:linear-gradient(135deg,transparent 50%,#f0b6c6 50%) left/50% 100% no-repeat,linear-gradient(225deg,transparent 50%,#f0b6c6 50%) right/50% 100% no-repeat}
+.flap{position:absolute;top:0;left:0;width:100%;height:120px;background:#ee9db3;clip-path:polygon(0 0,100% 0,50% 100%);transform-origin:top;transition:transform .8s ease;z-index:3}
+.seal{position:absolute;left:50%;top:92px;transform:translateX(-50%);font-size:1.7rem;z-index:4;transition:opacity .4s}
+.label{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:5;width:86%;background:var(--cream);color:var(--mauve);
+border-radius:8px;padding:6px 8px;font-size:1.2rem;line-height:1.15;border:1px dashed var(--rose)}
+.envelope.open{animation:none}
+.envelope.open .flap{transform:rotateX(180deg);z-index:0}
+.envelope.open .seal{opacity:0}
+@keyframes wiggle{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+.card{background:var(--cream);border-radius:16px;padding:24px 20px;border:1px solid #f5d9e0;box-shadow:0 10px 30px rgba(185,106,133,.25)}
+.card p{font-size:1.55rem;line-height:1.4;color:var(--ink)}
+.choices{display:flex;flex-direction:column;gap:12px;margin-top:20px}
+button.choice{font-family:inherit;font-size:1.45rem;font-weight:600;color:#fff;border:none;cursor:pointer;padding:12px 20px;border-radius:30px;
+background:linear-gradient(135deg,#eaa6ba,var(--mauve));box-shadow:0 6px 16px rgba(185,106,133,.35);transition:transform .3s}
+button.choice:active{transform:scale(1.03)}
+.video{position:relative;width:100%;padding-top:56.25%;border-radius:16px;overflow:hidden;box-shadow:0 12px 30px rgba(185,106,133,.35);border:4px solid #fff;margin-bottom:20px;background:#f8d5df}
+.video iframe,.video .ph{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ph{display:flex;align-items:center;justify-content:center;font-size:1.4rem;color:var(--mauve);padding:16px}
+.paper{background-color:var(--cream);border-radius:14px;padding:24px 22px;border:1px solid #f5d9e0;box-shadow:0 8px 22px rgba(185,106,133,.22);
+text-align:left;font-size:1.5rem;line-height:1.5;white-space:pre-line;min-height:120px;color:var(--ink)}
+.marq{overflow:hidden;white-space:nowrap;margin:0 auto 22px;max-width:300px;border-radius:20px;background:linear-gradient(90deg,#ffd6e3,#fff,#ffd6e3);border:2px solid #fff;box-shadow:0 0 0 2px var(--rose),0 4px 12px rgba(185,106,133,.25);font-size:1.15rem;color:var(--mauve);padding:3px 0}
+.marq span{display:inline-block;padding-left:100%;animation:mq 9s linear infinite}
+@keyframes mq{to{transform:translateX(-100%)}}
+.new{position:absolute;top:-16px;right:-14px;z-index:6;background:#fff;color:var(--mauve);font-weight:600;font-size:1.05rem;padding:2px 10px;border-radius:50% 50% 50% 50%/60% 60% 40% 40%;border:2px solid var(--rose);transform:rotate(12deg);box-shadow:0 3px 8px rgba(185,106,133,.3);animation:pop 1.6s ease-in-out infinite}
+@keyframes pop{0%,100%{transform:rotate(12deg) scale(1)}50%{transform:rotate(8deg) scale(1.12)}}
+.card,.win{border:3px solid #fff;box-shadow:0 0 0 2px var(--rose),0 12px 28px rgba(185,106,133,.3);border-radius:14px;overflow:hidden;background:var(--cream)}
+.card{padding:0 0 22px}
+.card p,.card .choices{margin-left:18px;margin-right:18px}
+.card p{margin-top:18px}
+.win .paper{border:0;box-shadow:none;border-radius:0;background-image:radial-gradient(#fbd3de 1.2px,transparent 1.4px);background-size:16px 16px}
+.tbar{display:flex;justify-content:space-between;align-items:center;background:linear-gradient(90deg,#f6a9c1,#ffd9e6 55%,#e9c9ff);color:#fff;font-size:1.1rem;padding:5px 10px;text-shadow:0 1px 2px rgba(185,106,133,.6);text-align:left}
+.tbar i{font-style:normal;background:#fff;color:var(--mauve);border-radius:4px;padding:0 6px;font-size:.9rem;text-shadow:none;border:1px solid var(--rose)}
+button.choice{border:2px solid #fff;background:linear-gradient(180deg,#ffc2d4 0%,#f08fae 48%,#e47a9f 52%,#f3a6c0 100%);box-shadow:0 0 0 2px var(--rose),0 6px 14px rgba(185,106,133,.35),inset 0 2px 4px rgba(255,255,255,.7);text-shadow:0 1px 2px rgba(150,60,90,.5)}
+.video{border-radius:12px;border:3px solid #fff;box-shadow:0 0 0 2px var(--rose),0 12px 28px rgba(185,106,133,.35)}
+.spk{position:fixed;pointer-events:none;z-index:50;font-size:18px;animation:burst .9s ease-out forwards}
+@keyframes burst{from{opacity:1;transform:translate(0,0) scale(.6)}to{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.4) rotate(120deg)}}
+</style>
+</head>
+<body>
+<div class="scene active" id="s1">
+  <div class="marq"><span>✧ new message ♡ 1 unread ✧ new message ♡ 1 unread ✧</span></div>
+  <div class="envelope" id="env"><div class="flap"></div><div class="seal">🎀</div><div class="new">NEW!</div><div class="label">Buat kamu yang sering bikin deg-degan 💌</div></div>
+  <p class="hint">Jangan dibuka kalau nggak siap salah tingkah 🎀</p>
+  <p class="tap">(klik amplopnya ✨)</p>
+</div>
+<div class="scene" id="s2"><div class="card"><div class="tbar"><span>♡ pilih_satu.exe</span><i>✕</i></div><p id="prompt"></p><div class="choices" id="choices"></div></div></div>
+<div class="scene" id="s3"><div class="video" id="videoBox"></div><div class="win"><div class="tbar"><span>✉ surat_buat_kamu.txt</span><i>✕</i></div><div class="paper" id="letter"></div></div></div>
+<script>
+const VIDEO_ID="VIDEO_ID",NAMA_DIA="kamu",NAMA_KAMU="aku";
+const START_SEC=0; // detik mulai reff (contoh: menit 1:05 = 65)
+const PROMPT="Eh, kamu beneran berani buka? 🙈 Jawab dulu ya, kita ini apa?";
+const OPTIONS=[
+{label:"Just friend 🎀",letter:`Dear {dia},
+
+Jujur ya, awalnya aku pikir kita cuma temenan biasa. Tapi entah sejak kapan, notif dari kamu jadi yang paling kutunggu. 🙈
+
+Aku nggak tau ini namanya apa. Yang aku tau, tiap kamu ketawa aku ikut senyum sendiri kayak orang aneh.
+
+Kalau ini cuma aku yang kepikiran, ya udah, anggap aja surat random. Tapi kalau kamu ngerasain hal yang sama, mungkin kita udah nggak "just friend" lagi dari lama. 🎀
+
+Dari,
+{aku}`},
+{label:"LDR 💗",letter:`Dear {dia},
+
+Katanya jarak itu bikin lupa. Tapi buat aku, malah kebalikannya. Makin jauh, makin sering kamu muncul di kepalaku. 💗
+
+Aku sadar kita nggak bisa ketemu kapan aja. Tapi aku nggak masalah nunggu, asal ujungnya itu kamu.
+
+Dan sumpah, aku masih suka mikir kamu lagi apa, udah makan belum, capek nggak. 🥹
+
+Jadi kalau kamu nanya, "worth it nggak sih?" Buatku, kamu selalu worth it.
+
+Dari,
+{aku}`},
+{label:"Lovesick 🌀",letter:`Dear {dia},
+
+Kamu milih ini, berarti kamu juga tau. 🌀
+
+Aku lagi parah banget. Jantung nggak bisa tenang, senyum sendiri, kepikiran kamu terus. Kayaknya aku beneran lovesick, dan penyebabnya cuma satu orang: kamu.
+
+Aku nggak minta kamu jawab sekarang. Aku cuma pengin kamu tau, kamu itu orang yang bikin aku jadi salah tingkah paling parah. 💓
+
+Jadi, boleh nggak aku jadi alasan kamu senyum juga?
+
+Dari,
+{aku}`}];
+const $=id=>document.getElementById(id);
+const show=id=>{document.querySelectorAll('.scene').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')};
+const sy=['🦋','🍒','⭐','💿','🎀','💗','✨','🧸','🫧','🌸'];
+for(let i=0;i<18;i++){const d=document.createElement('div');d.className='deco'+(i%3===0?' pink':'');d.textContent=sy[i%sy.length];
+d.style.left=Math.random()*100+'vw';d.style.top=Math.random()*100+'vh';d.style.fontSize=(12+Math.random()*16)+'px';d.style.animationDelay=(Math.random()*4)+'s';document.body.appendChild(d)}
+function typeText(el,t){let i=0;el.textContent='';const iv=setInterval(()=>{el.textContent+=t[i++];if(i>=t.length)clearInterval(iv)},38)}
+$('env').addEventListener('click',function(){this.classList.add('open');setTimeout(()=>{show('s2');$('prompt').textContent=PROMPT;
+OPTIONS.forEach(o=>{const b=document.createElement('button');b.className='choice';b.textContent=o.label;b.onclick=()=>pick(o);$('choices').appendChild(b)})},900)},{once:true});
+function pick(o){show('s3');
+$('videoBox').innerHTML=VIDEO_ID==="VIDEO_ID"?'<div class="ph">🎵 MV Lovesick muncul di sini (isi VIDEO_ID dulu ya)</div>':
+`<iframe src="https://www.youtube-nocookie.com/embed/${VIDEO_ID}?autoplay=1&playsinline=1&rel=0&start=${START_SEC}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+setTimeout(()=>typeText($('letter'),o.letter.replace(/{dia}/g,NAMA_DIA).replace(/{aku}/g,NAMA_KAMU)),1200)}
+document.addEventListener('pointerdown',e=>{const k=['✦','♡','✧','★'];for(let i=0;i<6;i++){const s=document.createElement('div');s.className='spk';s.textContent=k[i%4];s.style.left=e.clientX+'px';s.style.top=e.clientY+'px';s.style.color=i%2?'#e8a0b4':'#d9b779';const a=Math.random()*6.28,r=30+Math.random()*30;s.style.setProperty('--dx',Math.cos(a)*r+'px');s.style.setProperty('--dy',Math.sin(a)*r+'px');document.body.appendChild(s);setTimeout(()=>s.remove(),900)}});
+</script>
+</body>
+</html>
